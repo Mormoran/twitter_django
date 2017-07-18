@@ -9,7 +9,7 @@ from flatten_json import flatten
 from bson import json_util
 import tweepy
 import json
-from twitter_django.env import *
+# from twitter_django.env import *
 from django.conf import settings
 
 
