@@ -1,0 +1,94 @@
+{% load staticfiles %}
+{% load gravatar %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Tweetdash</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/paper/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+        <link rel="shortcut icon" type="image/png" href="/media/images/favicon.ico"/>
+        {% block head_js %}
+        {% endblock %}
+    </head>
+    <body class="content">
+
+        <nav class="navbar navbar-masthead navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{% url 'index' %}">Twitter Dashboard</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'index' %}">Search another user...</a></li>
+                        {% endif %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <span>
+                                    <img src="{% gravatar_url user.email %}" style="width:25px; height: 25px; background-color: #12ABB2; color: #ffffff;" class="img-circle">
+                                        {% if user.is_authenticated %}
+                                            </span> {{ user }} <span class="caret">
+                                        {% else %}
+                                            </span> Account <span class="caret">
+                                        {% endif %}
+                                            </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% if user.is_authenticated %}
+                                    <li><a href="{% url 'profile' %}">Profile</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="{% url 'logout' %}">Log Out</a></li>
+                                {% else %}
+                                    <li><a href="{% url 'login' %}">Log In</a></li>
+                                    <li><a href="{% url 'register' %}">Register</a></li>
+                                {% endif %}
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel">
+                        <div class="panel-body">
+                            
+                            
+                            {% block content %}
+                            {% endblock %}
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5">
+                    <footer class="align-footer">
+                        <div class="container">
+                            <h1>SOCIAL MEDIA LINKS GO HERE</h1>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>    
+    </body>
+</html>
+

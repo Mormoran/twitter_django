@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load gravatar %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <h1>Ready to get tweets?</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-md-offset-3">
+                <form action="{% url 'get_tweets' %}" class="search-form">
+                    {% comment %}<div class="form-group has-feedback">
+                        <label for="search" class="sr-only">Search</label>
+                        <input type="text" class="form-control" name="screen_name" id="search" placeholder="     Search">
+                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </div>{% endcomment %}
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="search">
+                                <input type="text" name="screen_name" class="form-control input-sm" maxlength="64" placeholder="Search" />
+                                {% comment %}<button type="submit" class="btn btn-primary btn-sm">Search</button>{% endcomment %}
+                                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

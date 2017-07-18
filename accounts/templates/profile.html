@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load bootstrap_tags %}
+{% load staticfiles %}
+
+{% block head_js %}
+    <script src="https://js.stripe.com/v2/" type="text/javascript"></script>
+    <script type="text/javascript">
+        //<![CDATA[
+        Stripe.publishableKey = '{{ publishable }}';
+        //]]>
+    </script>
+    <script type="text/javascript" src="{% static "js/stripe.js" %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="gray-background">
+        <h2>Success!</h2>
+        <p>You are logged in as {{ user.email }} </p>
+        
+        <script type="text/javascript">
+            function cancelSubscriptionCheck() {
+                if (confirm('Are you sure you want to cancel?')) {
+                    return true;
+                }
+                return false;
+            }
+        </script>
+    </div>
+{% endblock %}
