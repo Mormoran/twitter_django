@@ -50,7 +50,7 @@ def twitter_logic(user_name):
     MONGODB_URI = os.environ.get('MONGODB_URI')
     # conn = MongoClient('localhost', 27017)
     conn = MongoClient(MONGODB_URI)
-    db = conn['twitter_db']
+    db = conn['heroku_0bjjx80q']
     user_name = user_name.lower()
     collection = db[user_name]
 
