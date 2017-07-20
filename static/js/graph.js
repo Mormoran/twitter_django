@@ -14,7 +14,6 @@ week_day = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 // Most liked/retweeted vs common words (crossfilter?) 
 // Retweets / favorites by day of week / time of week 
 // Most interactions vs time of the day
-// JQuery selection for collections in database
 // Catch 404 for handles that don't exist
 // Make accounts (Django?) to handle user sets (name db as user name in Django?)
 // Top users (and display their followers)
@@ -54,16 +53,12 @@ function makeGraphs(error, tweetsJson) {
         return d;
     });
 
-    // Store all tweet text in a variable, made available by an accesor function
-    // all_tweets.forEach(function (d) {
-    //     text = d.text;
-    //     return text;
-    // });
 
+    // Create a variable accesor that allows the plot chart to determine 
+    // whether a tweet is a RT or original and color them accordingly
     var tweetColors = d3.scale.ordinal()
             .domain(["ORIGINAL", "RT"])
             .range(["purple", "yellow"]);
-
 
 
     // Create a Crossfilter instance. This will aid in filtering your charts.
@@ -75,6 +70,11 @@ function makeGraphs(error, tweetsJson) {
     // Counts and groups all tweets in the database
     var all = ndx.groupAll();
 
+    var profileimage = document.createElement('img');
+    profileimage.src = all_tweets[0].user_profile_image_url.replace('_normal', '_400x400');
+    document.getElementById('profile-image').appendChild(profileimage);
+    profileimage.classList.add("img-circle");
+    profileimage.classList.add("profile-img");
 
 
     // Define Dimensions
@@ -115,11 +115,14 @@ function makeGraphs(error, tweetsJson) {
     });
 
 
+
+    // Create an empty dictionary that we will use to store all tweets with the tweet date object as the key
+    // and the exact second the tweet was created at as the value, this gives the plot dimension 2 coordinates
+    // that it uses to plot the chart with
     var tweetsDict = {};
 
     // Dimension by date and hour, for the scatter plot
     var tweetsByDateAndHourDim = ndx.dimension(function (d, i) {
-        // return [d["created_at"], secondsInADay(d["created_at"])];
         tweetsDict[d["created_at"]] = d;
         return [d["created_at"], d["created_at"].getHours() + (d['created_at'].getMinutes()/100) + (d['created_at'].getSeconds()/1000)];
     })
@@ -163,28 +166,28 @@ function makeGraphs(error, tweetsJson) {
     var numTweetsByPeriod = periodDim.group();
 
     // Groups all tweets by average of tweets per day
-    var numTweetsPerDay = dayDim.group().reduce(
-            function (p, v) {
-                ++p.count;
-                p.total += v.spend;
-                p.average = p.total / p.count;
-                return p;
-            },
-            function (p, v) {
-                --p.count;
-                if(p.count == 0) {
-                    p.total = 0;
-                    p.average = 0;
-                } else {
-                    p.total -= v.spend;
-                    p.average = p.total / p.count;
-                };
-                return p;
-            },
-            function () {
-                return {count: 0, total: 0, average: 0};
-            }
-        );
+    // var numTweetsPerDay = dayDim.group().reduce(
+    //         function (p, v) {
+    //             ++p.count;
+    //             p.total += v.spend;
+    //             p.average = p.total / p.count;
+    //             return p;
+    //         },
+    //         function (p, v) {
+    //             --p.count;
+    //             if(p.count == 0) {
+    //                 p.total = 0;
+    //                 p.average = 0;
+    //             } else {
+    //                 p.total -= v.spend;
+    //                 p.average = p.total / p.count;
+    //             };
+    //             return p;
+    //         },
+    //         function () {
+    //             return {count: 0, total: 0, average: 0};
+    //         }
+    //     );
 
     // Groups all tweets by date, including minutes and seconds
     var tweetsByDateAndHourGroup = tweetsByDateAndHourDim.group();
@@ -209,13 +212,27 @@ function makeGraphs(error, tweetsJson) {
     var scatterTweets = dc.scatterPlot("#scatter-Tweets-by-period-of-day");
     var totalTweetsDisplay = dc.numberDisplay("#total-tweets");
 
-    var svg_width = document.getElementById('time-chart').offsetWidth;
-    console.log(svg_width)
+    
+    // Experimenting with making the charts responsive programatically
+    // instead of trying to create multiple media queries and transforms on CSS
+    function parentWidth(elem) {
+        return elem.parentElement.clientWidth;
+    }
+
+    chart_width = parentWidth(document.getElementById('time-chart'));
+    pie_width = parentWidth(document.getElementById('hashtag-pie-chart'));
+
+    // window.onresize = svg_width = parentWidth(document.getElementById('time-chart'));
+
+    // console.log(svg_width);
+
+
+
 
     // Define chart properties
 
     timeChart
-        .width(window.innerWidth/1.8)
+        .width(chart_width)
         .height(window.innerHeight/2)
         .x(d3.time.scale().domain([minDate, maxDate]))
         .interpolate('linear')
@@ -234,8 +251,9 @@ function makeGraphs(error, tweetsJson) {
         .group(numTweetsByDate);
 
     hasHashtagChart
-        .height(window.clientHeight)
-        .radius(window.innerRadius)
+        .width(pie_width)
+        .height(window.innerHeight/4.5)
+        .radius(window.innerRadius/2)
         .innerRadius(20)
         .transitionDuration(500)
         .dimension(hasHashtagDim)
@@ -254,8 +272,9 @@ function makeGraphs(error, tweetsJson) {
         });
 
     uniqueTweetsPie
-        .height(window.clientHeight)
-        .radius(window.innerRadius)
+        .width(pie_width)
+        .height(window.clientHeight/2)
+        .radius(window.innerRadius/2)
         .innerRadius(20)
         .transitionDuration(500)
         .dimension(isRetweetDim)
@@ -274,12 +293,15 @@ function makeGraphs(error, tweetsJson) {
         });
 
     dayOfWeekPie
+        .width(pie_width)
         .height(window.clientHeight)
         .radius(window.innerRadius)
         .innerRadius(20)
         .transitionDuration(500)
         .dimension(dayDim)
         .group(numTweetsByDay)
+        // The following titles and labels call a list called weed_day with the d.key object as the index value
+        // which returns Mon-Sun depending on the value of d.key
         .label(function (d) {
             return week_day[d.key];
         })
@@ -288,6 +310,7 @@ function makeGraphs(error, tweetsJson) {
         });
 
     periodOfDayPie
+        .width(pie_width)
         .height(window.clientHeight)
         .radius(window.innerRadius)
         .innerRadius(20)
@@ -344,6 +367,9 @@ function makeGraphs(error, tweetsJson) {
         .dimension(tweetsByDateAndHourDim)
         .group(tweetsByDateAndHourGroup);
 
+
+        // This D3 function styles the Y axis label on the scatter plot to make it clear it is plotting
+        // the Y axis on a 12H format
         scatterTweets.yAxis().tickFormat(function (d) {
             if (d <= 11)  {
                 return d + " AM"
@@ -361,17 +387,23 @@ function makeGraphs(error, tweetsJson) {
 
     dc.renderAll();
 
-    window.onresize = function() {
+    var resizeTimer;
+
+    $(window).on('resize', function(e) {
+
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+
         timeChart
             .width(window.innerWidth/1.8)
             .height(window.innerHeight/2);
         // hasHashtagChart
         //     .height(window.innerHeight/12)
-        //     .width(window.innerWidth/12)
+        //     .width(pie_width)
         //     .redraw();
         // uniqueTweetsPie
         //     .height(window.innerHeight/12)
-        //     .width(window.innerWidth/12)
+        //     .width(pie_width)
         //     .redraw();
         scatterTweets
             .width(window.innerWidth/1.8)
@@ -380,8 +412,35 @@ function makeGraphs(error, tweetsJson) {
             .width(window.innerWidth/1.8)
             .height(window.innerHeight/2);
 
-        dc.redrawAll();
-        dc.renderAll();
-    };
+        window.location.reload();
+                
+    }, 250);
+
+    });
+
+    // window.onresize = function() {
+    //     timeChart
+    //         .width(window.innerWidth/1.8)
+    //         .height(window.innerHeight/2);
+    //     // hasHashtagChart
+    //     //     .height(window.innerHeight/12)
+    //     //     .width(pie_width)
+    //     //     .redraw();
+    //     // uniqueTweetsPie
+    //     //     .height(window.innerHeight/12)
+    //     //     .width(pie_width)
+    //     //     .redraw();
+    //     scatterTweets
+    //         .width(window.innerWidth/1.8)
+    //         .height(window.innerHeight/2);
+    //     uniqueTweetsChart
+    //         .width(window.innerWidth/1.8)
+    //         .height(window.innerHeight/2);
+
+    //     dc.redrawAll();
+    //     dc.renderAll();
+
+    //     // console.log(svg_width);
+    // };
 
 }

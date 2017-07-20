@@ -5,8 +5,7 @@ var element = document.getElementById('choose-collection')
 // This function will be called when the select value changes, as the event name implies
 element.onchange = function () {
 
-    // Insert selected html element to option "element.value" which is the selected value in the select element
-    
+    // Insert selected html element to option "element.value" which is the selected value in the select element    
 
     // So if the user selects 'gabyguedezh', they'll be redirected to '/data/gabyguedezh'
     // And the HTML <option> will have the "selected" attribute injected dynamically

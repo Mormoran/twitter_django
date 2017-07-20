@@ -9,7 +9,7 @@ from flatten_json import flatten
 from bson import json_util
 import tweepy
 import json
-# from twitter_django.env import *
+from twitter_django.env import *
 from django.conf import settings
 
 
@@ -47,7 +47,9 @@ def twitter_logic(user_name):
     api = a.api
 
     # Assume there's MongoDB running on the machine, get a connection to it
-    conn = MongoClient('localhost', 27017)
+    MONGODB_URI = os.environ.get('MONGODB_URI')
+    # conn = MongoClient('localhost', 27017)
+    conn = MongoClient(MONGODB_URI)
     db = conn['twitter_db']
     user_name = user_name.lower()
     collection = db[user_name]
@@ -83,12 +85,10 @@ def twitter_logic(user_name):
         else:
             collection.update_one({'id': tweet['id']}, {'$set': {'retweet_count': tweet['retweet_count'], 'favorite_count': tweet['favorite_count'], 'favorited': tweet['favorited'], 'retweeted': tweet['retweeted']}}, upsert=False)
 
-# if __name__ == "__main__":
-#     twitter_logic(user_name.lower())
 
 
 
-
+# Connect to MongoDB, and store all collections in a list object that is used in a for loop in the HTML to populate the select dropdown
 def get_mongo_collections():
     conn = MongoClient('localhost', 27017)
     database = conn['twitter_db']
@@ -100,7 +100,7 @@ def get_mongo_collections():
 
 
 
-
+# Connect to MongoDB using the screen_name we retrieve from the URL (through views.py) to access the collection we want
 def get_tweets_json(screen_name):
     MONGODB_HOST = 'localhost'
     MONGODB_PORT = 27017

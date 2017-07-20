@@ -14,13 +14,11 @@
     
     <div id="outer" class="container-fluid">
         <div class="row">
-            <div class="col-sm-6 col-md-offset-4">
+            <div class="col-md-2 col-md-offset-2 align-picture">
+                <span id="profile-image"></span>
+            </div>
+            <div class="col-md-8">
                 <h1>{{ screen_name }}</h1>
-                <span class="story-img" href="#">
-                    <img src="{{ profile_picture }}"
-                            style="width:100px; height: 100px; background-color: #12ABB2; color: #ffffff;" class="img-circle">
-                </span>
-                
                 <form action="" method="GET">
                     <span>Change dataset: </span>
 
@@ -34,14 +32,14 @@
                                 <option selected value="{{i}}">{{i}}</option>
                             {% else %}
                                 <option value="{{i}}">{{i}}</option>
-                            {% endif %}
+                            {% endif %}S
                         {% endfor %}
                     </select>
+
                     <span><a href="javascript:dc.filterAll(); dc.renderAll(); dc.redrawAll(); dc.refocusAll();">Reset All</a></span>
-                    <p></p>
                 </form>
             </div>
-            <div class="col-md-1">
+            <div class="col-md-1 fixed-tweets">
                 <div class="chart-wrapper">
                     <div class="chart-title">
                         Total Tweets
@@ -54,19 +52,17 @@
         </div>
     </div>
 
-    <hr>
-
     <div class="container padding_top col-sm-12">
 		<div class="panel panel-default inner_div">
 			<div class="panel-heading">
 				<h3 class="panel-title text-center">
-						Tweets by date (Zoomable)
+						Scatter Plot by Period of Day (Zoomable)
 				</h3>
 			</div>
 			<div>
 				<div class="panel-body">
 					<div class="chart-stage">
-                        <div id="time-chart"></div>
+                        <div id="scatter-Tweets-by-period-of-day"></div>
                     </div>
 				</div>
 			</div>
@@ -99,7 +95,7 @@
 			</div>
 			<div>
 				<div class="panel-body">
-					<div class="col-sm-2">
+					<div class="col-sm-3">
                         <div class="chart-wrapper">
                             <div class="chart-title">
                                 Total Hashtags
@@ -109,7 +105,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-3">
                         <div class="chart-wrapper">
                             <div class="chart-title">
                                 Original content vs retweets
@@ -119,7 +115,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-3">
                         <div class="chart-wrapper">
                             <div class="chart-title">
                                 Tweets by Day of the Week
@@ -129,7 +125,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-3">
                         <div class="chart-wrapper">
                             <div class="chart-title">
                                 Tweets by Period of Day
@@ -148,13 +144,13 @@
 		<div class="panel panel-default inner_div">
 			<div class="panel-heading">
 				<h3 class="panel-title text-center">
-						Scatter Plot by Period of Day (Zoomable)
+                        Tweets by Day
 				</h3>
 			</div>
 			<div>
 				<div class="panel-body">
-					<div class="chart-stage">
-                        <div id="scatter-Tweets-by-period-of-day"></div>
+					<div class="chart-stage">                        
+                        <div id="time-chart"></div>
                     </div>
 				</div>
 			</div>
