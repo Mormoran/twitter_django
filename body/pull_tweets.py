@@ -46,13 +46,17 @@ def twitter_logic(user_name):
                          wait_on_rate_limit_notify=True)
     api = a.api
 
-    # Assume there's MongoDB running on the machine, get a connection to it
+    # Assume there's MongoDB running on the machine/dyno, get a connection to it
     MONGODB_URI = os.environ.get('MONGODB_URI')
-    # conn = MongoClient('localhost', 27017)
     conn = MongoClient(MONGODB_URI)
     db = conn['heroku_0bjjx80q']
     user_name = user_name.lower()
     collection = db[user_name]
+
+    # conn = MongoClient('localhost', 27017)
+    # db = conn['twitter_db']
+    # user_name = user_name.lower()
+    # collection = db[user_name]
 
     # Use the cursor to skip the handling of the pagination mechanism 
     # http://docs.tweepy.org/en/latest/cursor_tutorial.html
@@ -90,8 +94,13 @@ def twitter_logic(user_name):
 
 # Connect to MongoDB, and store all collections in a list object that is used in a for loop in the HTML to populate the select dropdown
 def get_mongo_collections():
-    conn = MongoClient('localhost', 27017)
-    database = conn['twitter_db']
+    # conn = MongoClient('localhost', 27017)
+    # database = conn['twitter_db']
+    # collections = database.collection_names(include_system_collections=False)
+
+    MONGODB_URI = os.environ.get('MONGODB_URI')
+    conn = MongoClient(MONGODB_URI)
+    database = conn['heroku_0bjjx80q']
     collections = database.collection_names(include_system_collections=False)
 
     # Sort collection alphabetically
@@ -102,9 +111,13 @@ def get_mongo_collections():
 
 # Connect to MongoDB using the screen_name we retrieve from the URL (through views.py) to access the collection we want
 def get_tweets_json(screen_name):
-    MONGODB_HOST = 'localhost'
-    MONGODB_PORT = 27017
-    DBS_NAME = 'twitter_db'
+    # MONGODB_HOST = 'localhost'
+    # MONGODB_PORT = 27017
+    # DBS_NAME = 'twitter_db'
+    # COLLECTION_NAME = screen_name
+ 
+    MONGODB_URI = os.environ.get('MONGODB_URI')
+    DBS_NAME = os.environ.get('MONGODB_NAME')
     COLLECTION_NAME = screen_name
 
     # Define the record fields that we wish to retrieve from our MongoDB collection.
@@ -132,7 +145,9 @@ def get_tweets_json(screen_name):
 
     # Open a connection to MongoDB using a with statement such that the
     # connection will be closed as soon as we exit the with statement
-    with MongoClient(MONGODB_HOST, MONGODB_PORT) as conn:
+    
+    # with MongoClient(MONGODB_HOST, MONGODB_PORT) as conn:
+    with MongoClient(MONGODB_URI) as conn:
 
         # Define which collection we wish to access
         collection = conn[DBS_NAME][COLLECTION_NAME]
@@ -140,7 +155,7 @@ def get_tweets_json(screen_name):
         # Retrieve a result set only with the fields defined in FIELDS
         # and limit the the results to 55000
 
-        the_tweets = collection.find(projection=FIELDS)
+        tweets = collection.find(projection=FIELDS)
 
         # Convert projects to a list in a JSON object and return the JSON data
-        return json.dumps(list(the_tweets))
+        return json.dumps(list(tweets))

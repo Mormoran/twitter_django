@@ -217,23 +217,24 @@ function makeGraphs(error, tweetsJson) {
     // instead of trying to create multiple media queries and transforms on CSS
     function parentWidth(elem) {
         return elem.parentElement.clientWidth;
-    }
+    }    
 
-    chart_width = parentWidth(document.getElementById('time-chart'));
-    pie_width = parentWidth(document.getElementById('hashtag-pie-chart'));
+    chart_height_element = document.getElementById('time-chart');
+    positionInfo = chart_height_element.getBoundingClientRect();
+    chart_height = positionInfo.height;
+    // chart_width = parentWidth(document.getElementById('time-chart'));
+    chart_width = positionInfo.width;
 
-    // window.onresize = svg_width = parentWidth(document.getElementById('time-chart'));
-
-    // console.log(svg_width);
-
-
-
+    pie_height_element = document.getElementById('hashtag-pie-chart');
+    pie_position_info = pie_height_element.getBoundingClientRect();
+    pie_height = pie_position_info.height;
+    pie_width = pie_position_info.width;
 
     // Define chart properties
 
     timeChart
         .width(chart_width)
-        .height(window.innerHeight/2)
+        .height(chart_height)
         .x(d3.time.scale().domain([minDate, maxDate]))
         .interpolate('linear')
         .renderArea(true)
@@ -252,8 +253,8 @@ function makeGraphs(error, tweetsJson) {
 
     hasHashtagChart
         .width(pie_width)
-        .height(window.innerHeight/4.5)
-        .radius(window.innerRadius/2)
+        .height(pie_height)
+        .radius(90)
         .innerRadius(20)
         .transitionDuration(500)
         .dimension(hasHashtagDim)
