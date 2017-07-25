@@ -100,7 +100,8 @@ def get_mongo_collections():
 
     MONGODB_URI = os.environ.get('MONGODB_URI')
     conn = MongoClient(MONGODB_URI)
-    database = conn['heroku_0bjjx80q']
+    # database = conn['heroku_0bjjx80q']
+    database = conn[os.environ.get('MONGODB_NAME')]
     collections = database.collection_names(include_system_collections=False)
 
     # Sort collection alphabetically
