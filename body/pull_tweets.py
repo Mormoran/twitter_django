@@ -118,7 +118,7 @@ def get_tweets_json(screen_name):
     # COLLECTION_NAME = screen_name
  
     MONGODB_URI = os.environ.get('MONGODB_URI')
-    DBS_NAME = os.environ.get('MONGODB_NAME')
+    DBS_NAME = os.environ.get('MONGO_DB_NAME')
     COLLECTION_NAME = screen_name
 
     # Define the record fields that we wish to retrieve from our MongoDB collection.
