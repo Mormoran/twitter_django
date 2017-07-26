@@ -100,9 +100,7 @@ def get_mongo_collections():
 
     MONGODB_URI = os.environ.get('MONGODB_URI')
     conn = MongoClient(MONGODB_URI)
-    # database = conn['heroku_0bjjx80q']
-    # database = conn[os.environ.get('MONGODB_NAME')]
-    DBS_NAME = os.environ.get('MONGODB_NAME')
+    DBS_NAME = os.environ.get('MONGO_DB_NAME')
     database = conn[DBS_NAME]
     collections = database.collection_names(include_system_collections=False)
 
