@@ -1,6 +1,15 @@
 function getData(screen_name) {
     // var url = "http://localhost:7000/tweets/data?screen_name=" + screen_name;
     var url = "https://mytweetdash.herokuapp.com/tweets/data?screen_name=" + screen_name;
+    var invocation = new XMLHttpRequest();
+    
+    function callOtherDomain() {
+        if(invocation) {    
+            invocation.open('GET', url, true);
+            invocation.onreadystatechange = handler;
+            invocation.send(); 
+        }
+    }
     queue().defer(d3.json, url).await(makeGraphs);
 }
 
