@@ -5,7 +5,7 @@ from django.conf import settings
 
 import tweepy
 from celery.decorators import task
-from tweet_dash_django.env import *
+from twitter_django.env import *
 
 from .models import Tweet, TwitterUser
 

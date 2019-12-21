@@ -41,7 +41,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'tweet_dash_django.urls'
+ROOT_URLCONF = 'twitter_django.urls'
 
 TEMPLATES = [
     {
@@ -60,7 +60,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'tweet_dash_django.wsgi.application'
+WSGI_APPLICATION = 'twitter_django.wsgi.application'
 
 
 # Database
@@ -72,7 +72,7 @@ WSGI_APPLICATION = 'tweet_dash_django.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'tweet_dash_django',
+        'NAME': 'twitter_django',
         'USER': 'tweet_dash',
         'PASSWORD': 'admin',
         'HOST': 'localhost',
@@ -114,7 +114,7 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)	    
+# Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
