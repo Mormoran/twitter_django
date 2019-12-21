@@ -1,1 +1,1 @@
-C:\users\mormo\virtualenvs\twitter_django_env\Scripts\activate
+C:\users\mormo\virtualenvs\tweet_dash_django_env\Scripts\activate

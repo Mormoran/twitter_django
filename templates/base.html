@@ -1,94 +1,111 @@
 {% load staticfiles %}
-{% load gravatar %}
 
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <title>Tweetdash</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/paper/bootstrap.min.css">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
-        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-        <link rel="shortcut icon" type="image/png" href="/media/images/favicon.ico"/>
-        {% block head_js %}
-        {% endblock %}
-    </head>
-    <body class="content">
+<html>
 
-        <nav class="navbar navbar-masthead navbar-default">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                            aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="{% url 'index' %}">TweetDash</a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        {% if user.is_authenticated %}
-                            <li><a href="{% url 'index' %}">Search another user...</a></li>
-                        {% endif %}
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                <span>
-                                    <img src="{% gravatar_url user.email %}" style="width:25px; height: 25px; background-color: #12ABB2; color: #ffffff;" class="img-circle">
-                                        {% if user.is_authenticated %}
-                                            </span> {{ user }} <span class="caret">
-                                        {% else %}
-                                            </span> Account <span class="caret">
-                                        {% endif %}
-                                            </span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                {% if user.is_authenticated %}
-                                    <li><a href="{% url 'profile' %}">Profile</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="{% url 'logout' %}">Log Out</a></li>
-                                {% else %}
-                                    <li><a href="{% url 'login' %}">Log In</a></li>
-                                    <li><a href="{% url 'register' %}">Register</a></li>
-                                {% endif %}
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="panel">
-                        <div class="panel-body">
-                            
-                            
-                            {% block content %}
-                            {% endblock %}
-                            
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% comment %}<div class="container">
-            <div class="row">
-                <div class="col-md-5">
-                    <footer class="align-footer">
-                        <div class="container">
-                            <h1>SOCIAL MEDIA LINKS GO HERE</h1>
-                        </div>
-                    </footer>
-                </div>
-            </div>
-        </div>{% endcomment %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>    
-    </body>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+	<link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}"/>
+
+	<title>{% block title %}Tweet Dashboard{% endblock %}</title>
+
+	{% block head_links %}
+	{% endblock %}
+
+	{% block head_js %}
+	{% endblock %}
+</head>
+
+<body style="background: url('{% static 'img/background-laptop.jpeg' %}'); background-repeat: no-repeat; background-size: cover; background-attachment: fixed; padding: 20px;">
+	<div class="wrapper">
+		<main>
+			<nav class="navbar navbar-expand-lg navbar-light bg-light">
+				<div class="container">
+					<a class="navbar-brand" href="{% url 'home' %}">TweetDash</a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navBarTarget"
+						aria-controls="navBarTarget" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div id="navbarNavDropdown" class="navbar-collapse collapse">
+						<ul class="navbar-nav mr-auto">
+							{% url 'home' as home %}
+							{% if request.path != home and request.user.is_authenticated %}
+								<li class="nav-item active">
+									<form class="form-inline my-2 my-lg-0" action="{% url 'get_tweets' %}" method="POST" enctype="multipart/form-data">
+										{% csrf_token %}
+										<input class="form-control mr-sm-2" type="search" id="searchUser" name="twitterUser" placeholder="Search Twitter" aria-label="Search" required>
+										<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Go!</button>
+									</form>
+								</li>
+							{% else %}
+								<li class="nav-item active">
+									Welcome!
+								</li>
+							{% endif %}
+						</ul>
+						<ul class="navbar-nav">
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<span>
+										{% if user.is_authenticated %}
+											</span> Hi {{ user }}! <span class="caret">
+										{% else %}
+											</span> Account <span class="caret">
+										{% endif %}
+									</span>
+								</a>
+								<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+									{% if user.is_authenticated %}
+										<a class="dropdown-item" href="{% url 'home' %}">Profile</a>
+										<div class="dropdown-divider"></div>
+										<a class="dropdown-item" href="{% url 'logout' %}">Log Out</a>
+									{% else %}
+										<a class="dropdown-item" href="{% url 'login' %}">Log In</a>
+										<div class="dropdown-divider"></div>
+										<a class="dropdown-item" href="{% url 'signup' %}">Register</a>
+									{% endif %}
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel">
+							<div class="panel-body mt-5">
+								<div class="content-wrap">
+									{% block content %}
+									{% endblock %}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<footer class="footer text-faded text-center">
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-4 col-md-6">
+							<p>Contact: <a href="mailto:support@tweetdash.com" target="_blank">support@tweetdash.com</a></p>
+						</div>
+						<div class="col-xs-4 col-md-6">
+							<p class="small">Copyright &copy; Andres Correa 2019</p>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</main>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+
 </html>
-

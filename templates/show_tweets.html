@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block head_links %}
+	<link rel="stylesheet" href="{% static 'css/dc.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/keen-dashboards.css' %}">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block head_js %}
+{% endblock %}
+
+{% block content %}
+
+	<div id="outer" class="container-fluid">
+		<div class="row">
+			<div class="col-md-2 col-md-offset-2 align-picture">
+				<span id="profile-image"></span>
+			</div>
+			<div class="col-md-8">
+				<h1 class="display-2 text-dark">{{ twitter_user }}</h1>
+				<form action="" method="GET">
+					<span>Change dataset: </span>
+
+					{% comment %}
+					The ID "choose-user is targeted by a JS script through getElementById to detect changes
+					in the option selector, and injecting the selection to the URL, thus triggering a URL change event
+					{% endcomment %}
+
+					<select id="choose-user">
+						{% for username in searched_users %}
+							{% if username == twitter_user %}
+								<option selected value="{{ username }}">{{ username }}</option>
+							{% else %}
+								<option value="{{ username }}">{{ username }}</option>
+							{% endif %}
+						{% endfor %}
+					</select>
+
+					<span><a href="javascript:dc.filterAll(); dc.renderAll(); dc.redrawAll(); dc.refocusAll();">Reset All</a></span>
+				</form>
+			</div>
+			<div class="col-md-1 fixed-tweets">
+				<div class="chart-wrapper">
+					<div class="chart-title">
+						Total Tweets
+					</div>
+					<div class="chart-stage">
+						<div id="total-tweets"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container col-md-12 pt-3">
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title text-center">
+						Scatter Plot by Period of Day (Zoomable)
+				</h3>
+			</div>
+			<div>
+				<div class="card-body">
+					<div class="chart-stage">
+						<div id="scatter-Tweets-by-period-of-day"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container col-md-12 pt-3">
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title text-center">
+						Original content vs retweets by Date (Zoomable)
+				</h3>
+			</div>
+			<div>
+				<div class="card-body">
+					<div class="chart-stage">
+						<div id="unique-tweets-chart"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container col-md pt-3">
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title text-center">
+						Pie Charts
+				</h3>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col">
+						<div class="chart-wrapper">
+							<div class="chart-title">
+								Total Hashtags
+							</div>
+							<div class="chart-stage">
+								<div id="hashtag-pie-chart"></div>
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="chart-wrapper">
+							<div class="chart-title">
+								Original content vs retweets
+							</div>
+							<div class="chart-stage">
+								<div id="unique-tweets-pie"></div>
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="chart-wrapper">
+							<div class="chart-title">
+								Tweets by Day of the Week
+							</div>
+							<div class="chart-stage">
+								<div id="tweets-by-day-of-week"></div>
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="chart-wrapper">
+							<div class="chart-title">
+								Tweets by Period of Day
+							</div>
+							<div class="chart-stage">
+								<div id="tweets-by-period-of-day"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container col-md pt-3">
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title text-center">
+						Tweets by Day
+				</h3>
+			</div>
+			<div>
+				<div class="card-body">
+					<div class="chart-stage">
+						<div id="time-chart"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="{% static 'js/crossfilter.js' %}"></script>
+	<script src="{% static 'js/d3.js' %}"></script>
+	<script src="{% static 'js/dc.js' %}"></script>
+	<script src="{% static 'js/queue.js' %}"></script>
+	<script src="{% static 'js/keen.min.js' %}"></script>
+	<script src="{% static 'js/graph.js' %}"></script>
+	<script src="{% static 'js/selection.js' %}"></script>
+	<script>getData('{{ twitter_user }}')</script>
+
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Home
+{% endblock %}
+
+{% block content %}
+	{% if user.is_authenticated %}
+		<div class="row justify-content-md-center">
+			<div class="col-md-6">
+				<h1 class="display-4 text-dark">Ready to get tweets?</h1>
+			</div>
+		</div>
+		<div class="row justify-content-md-center">
+			<form class="form-inline" action="{% url 'get_tweets' %}" method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div class="form-group mx-sm-3 mb-2">
+					<label for="searchUser" class="sr-only">Search</label>
+					<input type="text" class="form-control" id="searchUser" name="twitterUser" placeholder="Search Twitter User" required>
+				</div>
+				<button type="submit" class="btn btn-primary mb-2">Go!</button>
+			</form>
+		</div>
+		{% if messages %}
+			<hr>
+			<div class="messages">
+				{% for message in messages %}
+				<h4 class="display-2 {% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</h4>
+				{% endfor %}
+			</div>
+		{% endif %}
+	{% else %}
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<!-- <p>You must be logged in to retrieve Tweets!</p>
+				<a class="dropdown-item" href="{% url 'login' %}">Log In</a> -->
+				<div class="card text-right" style="width: 25rem;">
+					<div class="card-body">
+						<h5 class="card-title">Special title treatment</h5>
+						<p class="card-text">You must be logged in to retrieve Tweets!</p>
+						<a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-offset-5 col-md-4 text-center">
+				<div class="form-login h-25"></br>
+					<h4>Login</h4>
+					</br>
+					<input type="text" id="userName" class="form-control input-sm chat-input" placeholder="Username"/>
+					</br>
+					<input type="text" id="userPassword" class="form-control input-sm chat-input" placeholder="Password"/>
+					</br>
+					<div class="wrapper">
+						<span class="group-btn">
+							<a href="#" class="btn btn-primary btn-md">Login <i class="fa fa-sign-in"></i></a>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+{% endblock %}

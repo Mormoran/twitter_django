@@ -51,9 +51,8 @@ body.application hr {
 }
 
 .chart-wrapper .chart-stage {
-  /*min-height: 240px;*/
   overflow: hidden;
-  padding: 5px 10px;
+  padding: 20px;
   position: relative;
 }
 
