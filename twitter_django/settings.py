@@ -66,19 +66,19 @@ WSGI_APPLICATION = 'twitter_django.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-# DATABASE_URL = os.environ.get('DATABASE_URL')
-# DATABASES = {'default': dj_database_url.parse(DATABASE_URL) }
+DATABASE_URL = os.environ.get('DATABASE_URL')
+DATABASES = {'default': dj_database_url.parse(DATABASE_URL) }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'twitter_django',
-        'USER': 'tweet_dash',
-        'PASSWORD': 'admin',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'twitter_django',
+#         'USER': 'tweet_dash',
+#         'PASSWORD': 'admin',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 
 
 # Password validation
