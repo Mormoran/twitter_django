@@ -5,7 +5,7 @@ from django.conf import settings
 
 import tweepy
 from celery.decorators import task
-from twitter_django.env import *
+from decouple import config
 
 from .models import Tweet, TwitterUser
 
