@@ -5,3 +5,7 @@
 - Login dialog help - https://bootsnipp.com/snippets/R5rn4
 - Tweeter getter script obtained from https://gist.github.com/MihaiTabara/631ecb98f93046a9a454
 - Modified by Andres Correa with help from Richard Dalton
+
+- Python Decouple to separate dev and production environment variables
+- Celery to perform background tasks on server side on a different thread and consume tasks
+- Redis to act as a task queue manager and distributor
