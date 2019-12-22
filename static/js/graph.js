@@ -1,6 +1,6 @@
 function getData(screen_name) {
 	// var url = "http://localhost:8000/graphs/data/?username=" + screen_name;
-	var url = "https://mytweetdash.herokuapp.com/tweets/data?screen_name=" + screen_name;
+	var url = "https://mytweetdash.herokuapp.com/graphs/data/?username=" + screen_name;
 	queue().defer(d3.json, url).await(makeGraphs);
 }
 
