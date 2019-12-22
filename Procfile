@@ -1,1 +1,1 @@
-web: gunicorn twitter_django.wsgi --log-file -
+web: gunicorn twitter_django.wsgi:application --log-file - --log-level debug --workers 1
