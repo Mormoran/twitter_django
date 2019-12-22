@@ -1,4 +1,5 @@
 import json
+import time
 
 from django.contrib import messages
 from django.http import HttpResponseRedirect, JsonResponse
@@ -26,6 +27,8 @@ class GetTweetsView(generic.DetailView):
         if twitter_user not in searched_users:
             request.user.searched_users.append(twitter_user)
             request.user.save()
+
+        time.sleep(5)
 
         return redirect(reverse('show_tweets') + '?username=' + twitter_user)
 
