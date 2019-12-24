@@ -31,17 +31,6 @@
 		{% endif %}
 	{% else %}
 		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
-				<!-- <p>You must be logged in to retrieve Tweets!</p>
-				<a class="dropdown-item" href="{% url 'login' %}">Log In</a> -->
-				<div class="card text-right" style="width: 25rem;">
-					<div class="card-body">
-						<h5 class="card-title">Special title treatment</h5>
-						<p class="card-text">You must be logged in to retrieve Tweets!</p>
-						<a href="{% url 'login' %}" class="btn btn-primary">Login</a>
-					</div>
-				</div>
-			</div>
 			<div class="col-md-offset-5 col-md-4 text-center">
 				<div class="form-login h-25"></br>
 					<h4>Login</h4>
@@ -52,7 +41,7 @@
 					</br>
 					<div class="wrapper">
 						<span class="group-btn">
-							<a href="#" class="btn btn-primary btn-md">Login <i class="fa fa-sign-in"></i></a>
+							<a href="{% url 'login' %}" class="btn btn-primary btn-md">Login <i class="fa fa-sign-in"></i></a>
 						</span>
 					</div>
 				</div>
