@@ -235,8 +235,23 @@ h4 {
 .footer p {
   font-size: 18px;
 }
-.form-control::-webkit-input-placeholder { color: #595858; }  /* WebKit, Blink, Edge */
-.form-control:-moz-placeholder { color: #595858; }  /* Mozilla Firefox 4 to 18 */
-.form-control::-moz-placeholder { color: #595858; }  /* Mozilla Firefox 19+ */
-.form-control:-ms-input-placeholder { color: #595858; }  /* Internet Explorer 10-11 */
-.form-control::-ms-input-placeholder { color: #595858; }  /* Microsoft Edge */
+/* WebKit, Blink, Edge */
+.form-control::-webkit-input-placeholder {
+	color: #595858 !important;
+}
+/* Mozilla Firefox 4 to 18 */
+.form-control:-moz-placeholder {
+	color: #595858 !important;
+}
+/* Mozilla Firefox 19+ */
+.form-control::-moz-placeholder {
+	color: #595858 !important;
+}
+/* Internet Explorer 10-11 */
+.form-control:-ms-input-placeholder {
+	color: #595858 !important;
+}
+/* Microsoft Edge */
+.form-control::-ms-input-placeholder {
+	color: #595858 !important;
+}
