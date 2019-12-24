@@ -235,3 +235,16 @@ h4 {
 .footer p {
   font-size: 18px;
 }
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+	color: #595858;
+	opacity: 1; /* Firefox */
+  }
+
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+	color: #595858;
+  }
+
+  ::-ms-input-placeholder { /* Microsoft Edge */
+	color: #595858;
+  }
