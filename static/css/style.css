@@ -196,7 +196,7 @@ a:hover {
 }
 .form-control {
 	background: transparent !important;
-font-size: 18px !important;
+	font-size: 18px !important;
 }
 .wrapper {
 	text-align: center;
@@ -238,4 +238,7 @@ font-size: 18px !important;
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
+}
+.input-group input, .input-group input:focus, .form-group input, .form-group input:focus {
+	color: white;
 }
