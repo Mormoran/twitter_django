@@ -5,10 +5,41 @@
 {% endblock %}
 
 {% block content %}
-    <h2>Login</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Login</button>
-    </form>
+    <div class="row justify-content-center">
+        <div class="col col-md-6 form-login text-center">
+            <div class="h-25">
+                </br>
+                <h4 class="display-4 text-white">Login</h4>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group row justify-content-center">
+                        <div class="col-8">
+                            {% for element in form %}
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        {% if forloop.first %}
+                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        {% else %}
+                                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                        {% endif %}
+                                    </div>
+                                    {{ element }}
+                                </div>
+                            {% endfor %}
+                            <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="d-flex justify-content-center">
+                    <a class="text-white" href="{% url 'password_reset' %}">Reset Password?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('#id_username').addClass('form-control').attr('placeholder', 'Username');
+            $('#id_password').addClass('form-control').attr('placeholder', 'Password');
+        });
+    </script>
 {% endblock %}

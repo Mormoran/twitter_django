@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 
 {% block title %}
 	Home
@@ -6,20 +7,20 @@
 
 {% block content %}
 	{% if user.is_authenticated %}
-		<div class="row justify-content-md-center">
-			<div class="col-md-6">
-				<h1 class="display-4 text-dark">Ready to get tweets?</h1>
-			</div>
-		</div>
-		<div class="row justify-content-md-center">
-			<form class="form-inline" action="{% url 'get_tweets' %}" method="POST" enctype="multipart/form-data">
-				{% csrf_token %}
-				<div class="form-group mx-sm-3 mb-2">
-					<label for="searchUser" class="sr-only">Search</label>
-					<input type="text" class="form-control" id="searchUser" name="twitterUser" placeholder="Search Twitter User" required>
+		<div class="row justify-content-center">
+			<div class="col col-md-6 form-login text-center">
+				<h1 class="display-4 text-white">Ready to get tweets?</h1>
+				<div class="d-flex justify-content-center">
+					<form class="form-inline" action="{% url 'get_tweets' %}" method="POST" enctype="multipart/form-data">
+						{% csrf_token %}
+						<div class="form-group mx-sm-3 mb-2">
+							<label for="searchUser" class="sr-only">Search</label>
+							<input type="text" class="form-control" id="searchUser" name="twitterUser" placeholder="Search Twitter User" required>
+						</div>
+						<button type="submit" class="btn twitter-blue mb-2 text-white">Go!</button>
+					</form>
 				</div>
-				<button type="submit" class="btn btn-primary mb-2">Go!</button>
-			</form>
+			</div>
 		</div>
 		{% if messages %}
 			<hr>
@@ -30,19 +31,34 @@
 			</div>
 		{% endif %}
 	{% else %}
-		<div class="row">
-			<div class="col-md-offset-5 col-md-4 text-center">
-				<div class="form-login h-25"></br>
-					<h4>Login</h4>
-					</br>
-					<input type="text" id="userName" class="form-control input-sm chat-input" placeholder="Username"/>
-					</br>
-					<input type="password" id="userPassword" class="form-control input-sm chat-input" placeholder="Password"/>
-					</br>
-					<div class="wrapper">
-						<span class="group-btn">
-							<a href="{% url 'login' %}" class="btn btn-primary btn-md">Login <i class="fa fa-sign-in"></i></a>
-						</span>
+		<div class="row no-gutter">
+			<div class="d-none d-md-flex col-md-4 col-lg-6 bg-image" style="background-image: url('{% static 'img/bg_image.png' %}');"></div>
+			<div class="col-md-8 col-lg-6">
+				<div class="login d-flex align-items-center py-5">
+					<div class="row">
+						<div class="col-md-12 col-lg-10 mx-auto form-login text-center text-white">
+							<h4 class="login-heading display-4 mb-4 text-white">Welcome to My Tweet Dash</h4>
+							<h4 class="mb-4">A Twitter usage dashboard</h4>
+							<div class="row">
+								<div class="col-4">
+									<h3 class="display-3"><i class="fas fa-chart-pie twitter-blue-font"></i></h3>
+									<h5>Filter dynamically</h5>
+								</div>
+								<div class="col-4">
+									<h3 class="display-3"><i class="fas fa-chart-line twitter-blue-font"></i></h3>
+									<h5>Glean interesting data</h5>
+								</div>
+								<div class="col-4">
+									<h3 class="display-3"><i class="far fa-chart-bar twitter-blue-font"></i></h3>
+									<h5>Get usage trends</h5>
+								</div>
+							</div>
+							<hr>
+							<p class="mb-4">Search for any Twitter user and give us a few seconds.</p>
+							<p class="mb-4">We will fetch their timeline and craft a dashboard for you.</p>
+							<p class="mb-4">Though in order for us to keep your searched user's timelines updated, we will need you to create an account.</p>
+							<p class="mb-4">So please <a class="text-white font-weight-bold" href="{% url 'signup' %}"><u>signup</u></a> first or <a class="text-white font-weight-bold" href="{% url 'login' %}"><u>sign in</u></a> if you already have an account.</p>
+						</div>
 					</div>
 				</div>
 			</div>

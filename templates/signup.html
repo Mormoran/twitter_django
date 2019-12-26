@@ -5,10 +5,46 @@
 {% endblock %}
 
 {% block content %}
-    <h2>Sign up</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Sign up</button>
-    </form>
+    <div class="row justify-content-center">
+        <div class="col col-md-6 form-login">
+            <div class="h-25">
+                </br>
+                <h4 class="display-4 text-white">Signup</h4>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group row justify-content-center">
+                        <div class="col-8">
+                            {% for element in form %}
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        {% if forloop.counter == 1 %}
+                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        {% elif forloop.counter == 2 %}
+                                            <span class="input-group-text"><i class="fas fa-at"></i></span>
+                                        {% else %}
+                                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                        {% endif %}
+                                    </div>
+                                    {{ element }}
+                                </div>
+                            {% endfor %}
+                            <button class="btn btn-lg btn-block twitter-blue text-white" type="submit">Create account</button>
+                        </div>
+                    </div>
+                </form>
+                <br>
+                <div class="d-flex justify-content-center links">
+                    <p class="text-white">If you already have an account,<br>you can <a class="text-white font-weight-bold" href="{% url 'login' %}"><u>log in</u></a> instead.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('#id_username').addClass('form-control').attr('placeholder', 'Username');
+            $('#id_email').addClass('form-control').attr('placeholder', 'Email');
+            $('#id_password1').addClass('form-control').attr('placeholder', 'Password');
+            $('#id_password2').addClass('form-control').attr('placeholder', 'Repeat Password');
+        });
+    </script>
 {% endblock %}
