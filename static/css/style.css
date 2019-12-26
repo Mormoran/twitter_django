@@ -242,9 +242,7 @@ a:hover {
 .input-group input,
 .input-group input:focus,
 .form-group input,
-.form-group input:focus,
-.form-control input,
-.form-control input:focus {
+.form-group input:focus {
 	color: white;
 }
 .dropdown-menu a:hover,

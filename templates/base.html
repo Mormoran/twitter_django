@@ -43,7 +43,7 @@
 								<li class="nav-item active">
 									<form class="form-inline my-2 my-lg-0" action="{% url 'get_tweets' %}" method="POST" enctype="multipart/form-data">
 										{% csrf_token %}
-										<input class="form-control mr-sm-2" type="search" id="searchUser" name="twitterUser" placeholder="Search Twitter" aria-label="Search" required>
+										<input class="form-control mr-sm-2" type="search" id="searchUser" name="twitterUser" placeholder="Search Twitter" aria-label="Search" required style="color: white !important;">
 										<button class="btn twitter-blue text-white my-2 my-sm-0" type="submit">Go!</button>
 									</form>
 								</li>
