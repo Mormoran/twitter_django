@@ -239,10 +239,16 @@ a:hover {
 	background-position: center;
 	background-repeat: no-repeat;
 }
-.input-group input, .input-group input:focus, .form-group input, .form-group input:focus {
+.input-group input,
+.input-group input:focus,
+.form-group input,
+.form-group input:focus,
+.form-control input,
+.form-control input:focus {
 	color: white;
 }
-.dropdown-menu .dropdown-item > a:hover,
-.dropdown-menu .dropdown-item > a:focus {
-	background-color: none !important;
+.dropdown-menu a:hover,
+.dropdown-menu a:focus,
+.dropdown-menu a:active {
+	background-color: transparent !important;
 }
