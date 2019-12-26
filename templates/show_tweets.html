@@ -29,11 +29,11 @@
 
 					<select id="choose-user">
 						{% for username in searched_users %}
-							{% if username == twitter_user %}
-								<option selected value="{{ username }}">{{ username }}</option>
-							{% else %}
+							{% ifnotequal twitter_user|stringformat:"s" username %}
 								<option value="{{ username }}">{{ username }}</option>
-							{% endif %}
+							{% else %}
+								<option selected value="{{ username }}">{{ username }}</option>
+							{% endifnotequal %}
 						{% endfor %}
 					</select>
 

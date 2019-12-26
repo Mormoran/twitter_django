@@ -242,3 +242,7 @@ a:hover {
 .input-group input, .input-group input:focus, .form-group input, .form-group input:focus {
 	color: white;
 }
+.dropdown-menu .dropdown-item > a:hover,
+.dropdown-menu .dropdown-item > a:focus {
+	background-color: none !important;
+}
