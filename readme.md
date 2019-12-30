@@ -1,16 +1,3 @@
-- Change SQLite3 to PostgreSQL - https://tutorial-extensions.djangogirls.org/en/optional_postgresql_installation/
-- Implement user accounts system - https://wsvincent.com/django-user-authentication-tutorial-login-and-logout/
-- Workaround to have celery tasks in windows - https://github.com/celery/celery/issues/4081
-- Footer fix - https://medium.com/@zerox/keep-that-damn-footer-at-the-bottom-c7a921cb9551
-- Login dialog help - https://bootsnipp.com/snippets/R5rn4
-- Tweeter getter script obtained from https://gist.github.com/MihaiTabara/631ecb98f93046a9a454
-- Modified by Andres Correa with help from Richard Dalton
-
-- Python Decouple to separate dev and production environment variables
-- Celery to perform background tasks on server side on a different thread and consume tasks
-- Redis to act as a task queue manager and distributor
-
-
 # [Tweet Dash](https://mytweetdash.herokuapp.com/):
 A Twitter dashboard analysis tool with filterable graphs that convey usage trends for any single user.
 
@@ -23,20 +10,30 @@ Scope 1 - Beta version.
 
 The website will allow users to analyze and gather usage trends and statistics for any Twitter user account over time.
 
+The site will fetch and parse data from the user’s timeline up to 3,200 tweets (which is the limit imposed by Twitter’s API), providing insights displayed using data visualisation tools for easier understanding.
+
+The initial or beta version of the site will showcase the following information to users:
+- Detailed view of individual tweets in a scatter plot, showing all tweets over a historical timeline divided in 24 hour segments with the tweet's text body included in the point tooltip.
+- A bar chart comparing daily tweets and retweets.
+- A series of pie charts that show original tweets and retweets, tweets using hashtags and without them, and tweets by day of the week, and tweets sent over different times of the day.
+- A bar chart showing the number of tweets per day.
+
+
 Scope 2 - Commercial dashboard.
 
 A host of in-depth charts and scheduled retrieval of any user's timeline will ensure the latest trends and tweets are always accessible. More advanced charts will also show much more detailed usage data and statistics and allow the customer to spot potential revenue streams, weaknesses in their campaigns or opportunities to engage different audiences.
 
+It is also planned that the dashboard will offer real time updates, changing as a user continues to tweet.
+
 ##### User stories:
 
-- As a People Operations Coordinator, I want to find and hire a team of performers, so I can give a special touch to my office’s Christmas party.
-- As a bridesmaid, I want to find an illusionist that will perform at my friend’s engagement party, so I can surprise her and her family.
-- As a cocktail bar owner, I want to have a list of reliable performers I can call and book on semi-regular basis, so I can throw themed events for my customers.
-- As a mother of a 7 year old, I want to see images and descriptions of the performers, so I can get a sense of whether their show will be suitable for a children’s party.
+- As a social media influencer, I want to make sure I maintain my ratio of original content higher than my retweets, so I can establish a name as a content creator and not just a sharer.
+- As a small business owner, I want to monitor that the shop’s assistant manager is tweeting on behalf of our business at the right times, so we can reach our audience more effectively.
+- As a marketing agency executive, I want to confirm a potential collaborator is active and consistent on Twitter, so I can make an informed decision before offering them a contract.
+- As a journalist, I want to see what is the period of the day when I am more frequently tweeting, so I can adjust it to those times where my readers are more likely to be online.
+- As a blogger, I want to see my proportion of tweets per day of the week, so I can make sure I am remembering to tweet evenly and not only when I’ve spare time.
 
 ##### Mockups and wireframes
-
-See the mockup
 
 The mockup for this project was created with Balsamiq.
 
@@ -48,101 +45,145 @@ Alternatively, you can find the mockup uploaded as a PNG within the folder ASSET
 
 ##### Existing features
 
-A homepage that shows a group photo of some of the company’s main performers, as well as a description of what they do and a call to action to facilitate users going to the contact us page.
+A homepage that prompts the user to login or create an account.
 
-A rotating carousel of images with professional photography of the Kadabra Entertainment acts.
+An account's system that allows the site to remember all of a user’s Twitter user searches and enables them to use the dashboard.
 
-A section with more information and a feature image of each performer, and allows them to move up or down with the mouse or the arrows.
+A dashboard in which logged in users can enter a public Twitter account’s profile name to get analytics regarding usage trends.
 
-An image gallery with professional headshots and action shots, which opens in a  modal when users click on a photo, and allows them to move forwards or backwards with the mouse or the arrows.
+A crossfilter allows the filtering of tweet data by clicking on the pie chart wedges that provide users with key information about their tweeting habits (for example, original versus retweeted content, tweets with and without the use of hashtags, etc).
 
-A contact form that allows users to get in touch. To facilitate separating leads, support and general queries, users can select the most relevant between different possible subjects. The Kadabra Entertainment team will receive an email when a form is submitted (this is the desired feature, however, as part of a static, front-end initial project, the email functionality is not yet implemented on the back end).
+A dropdown menu that allows users to change from one dataset to another, fetching the analytics of different accounts they’ve searched before.
 
-The website features a gallery with a wide variety of images showcasing acts that might be suitable for different types of events. Some of the acts include descriptors such as “spooky” or “scary”, which provides information to parents looking for acts that might scare smaller children.
 
 ##### Desired features
 
-We would like to include a page with reviews where they can show positive testimonials from former customers.
+We plan to include real time updates in a future version by polling the currently selected Twitter user’s timeline every 10 seconds with a [setInterval’ed](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval) [$.ajax GET request](https://api.jquery.com/jquery.ajax/), and comparing the last fetched tweet with the last tweet in our database (using Django’s filters to fetch `.last()` from our tweets table). If they are different we push the tweet’s JSON body to our data array, and use the DC.js methods to update and redraw the charts [without trashing the current charts](https://dc-js.github.io/dc.js/examples/replacing-data.html).
 
-Eventually, it would be ideal to feature a calendar showing available dates, filtering by performer or type of act.
+We also plan to include more graphs types that help us give further details about a Twitter user’s own trends such as
+
+- Average tweets per day
+- Average tweets per day of the week
+- Most interactions VS time of the day
+- Most favourites VS day of the week
+- Most retweets VS day of the week
+- Top 10 most liked tweets
+- Top 10 most retweeted tweets
+- Top 10 users by interaction
+
+A feature allowing us to separate free accounts and paid accounts will allow the site to become a revenue stream and also, to offer some premium features to users who need or want further data about the accounts they search. Some examples of premium features would include side by side Twitter users comparisson, email notifications for certain thresholds (certain amount of tweets in a day, a tweet reaching a certain amount of retweets/favourites, etc).
 
 ## Technologies Used
+
+- [Datas Driven Documents (D3.js)](https://d3js.org/)
+    - Basis library for our graphs
+
+- [DC.js](https://dc-js.github.io/dc.js/)
+    - Wrapper library for D3.js that simplifies chart creation and filtering
+
+- [Crossfilter.js](https://square.github.io/crossfilter/)
+    - Allows dynamic dataset shifting and filtering by providing chart bin methods
 
 - [JQuery](https://jquery.com)
     - For DOM manipulation.
 
-- [JQuery Flip](http://lab.smashup.it/flip/)
-    - For the flip on the gallery and homepage.
-
-- [JQuery/UI](https://jqueryui.com/)
-    - For the the gallery and homepage.
-
-- [Masonry PACKAGED](https://masonry.desandro.com/)
-    - For the pictures gallery.
-
 - [Font Awesome](https://fontawesome.com/)
     - For better design and styling.
 
+- [Whitenoise](http://whitenoise.evans.io/en/stable/)
+    - Simple yet powerful static file serving for WSGI.
+
+- [Tweepy](https://www.tweepy.org/)
+    - Python library to interact with the Twitter public API
+
+- [Twitter API](https://developer.twitter.com/en/docs)
+    - RESTful API that allows us to fetch any public Twitter user's timeline
+
+- [PostgreSQL Database](https://www.postgresql.org/)
+    - Allows certain special field types for Django databases we need (array field and JSON field)
+
+- [Python Decouple](https://pypi.org/project/python-decouple/)
+    - To separate dev and production environment variables
+
+- [Python Celery](http://www.celeryproject.org/)
+    - To perform background tasks on server side on a different thread and consume tasks asynchronously
+
+- [Redis](https://redis.io/)
+    - To act as a task queue manager and distributor
+
+
 ### Testing
 
-- As a People Operations Coordinator, I want to find and hire a team of performers, so I can give a special touch to my office’s Christmas party.
+Revisiting the user stories given above, followed by an explanation of how the site fulfills these needs:
 
-- Users can go to a landing page with information about each performer and their act, and then go to the contact us page in order to get in touch about booking their desired act or acts.
+- As a social media influencer, I want to make sure I maintain my ratio of original content higher than my retweets, so I can establish a name as a content creator and not just a sharer.
+- The dashboard allows a user searching themselves to see their proportion of original tweets versus retweets in a simple and easy to understand pie chart. They can also have a visual representation of their original versus retweet ratio by looking at the purple versus yellow dots on the scatter plot on top of the dashboard.
 
-- As a bridesmaid, I want to find an illusionist that will perform at my friend’s engagement party, so I can surprise her and her family.
+- As a small business owner, I want to monitor that the shop’s assistant manager is tweeting on behalf of our business at the right times, so we can reach our audience more effectively.
+- The scatter plot by period of the day at the beginning of the dashboard shows all tweets visualised over the time of the day they were sent, allowing for a clear view on when is content being sent.
 
-- Users can navigate the gallery to get an idea of the different acts, and they can read the descriptions on the performers page.
+- As a marketing agency executive, I want to confirm a potential collaborator is active and consistent on Twitter, so I can make an informed decision before offering them a contract.
+- The user can search the potential collaborator’s profile and get insights on their frequency of tweets (time of day, day of week) as well as check whether they are simply retweeting or are creating original content.
 
-- As a cocktail bar owner, I want to have a list of reliable performers I can call and book on semi-regular basis, so I can throw themed events for my customers.
+- As a journalist, I want to see what is the period of the day when I am more frequently tweeting, so I can adjust it to those times where my readers are more likely to be online.
+- The user can have a general overview of this by seeing the scatterplot, but also, they can see the pie chart section where a graph titled Tweets by Period for the Day displays the share of content divided by Morning, Afternoon, Evening, and Late Night.
 
-- Users can reach out directly to the company via the form on the contact us page, or call to their phone number. The different performers are listed by name or stage name, so users can inquiry about a particular artist if preferred.
-
-- As a mother of a 7 year old, I want to see images and descriptions of the performers, so I can get a sense of whether their show will be suitable for a children’s party.
+- As a blogger, I want to see my proportion of tweets per day of the week, so I can make sure I am remembering to tweet evenly and not only when I’ve spare time.
+- The user can have a general overview of this by seeing the scatterplot, but also, they can see the pie chart section where a graph titled Tweets by Day of the Week displays the share of content divided by each of the seven days of the week.
 
 #### Manual Testing
 
-1. Browse the gallery:
-    1. Click on hamburger button: Menu opens.
-    2. Click on “Gallery”: Gallery opens.
-    3. Click on an image: Modal with the desired image opens.
-    4. Click on the arrows left and right: images move left or right respectively.
-    5. Click “esc” to exit: modal closes.
+1. Logging in:
+    1. Open site: Homepage prompts user to sign-in or sign-up.
+    2. Click on “sign-in”: user is taken to a login page asking for username and password.
+    3. Input wrong password: User can’t login.
+    4. Input correct password and username: User logs in successfully.
 
-    - (Feedback: In future versions, it will be ideal to offer users more intuitive ways to close the modal, but at least the given option is highlighted, readable and functioning.)
+    - (Feedback: In future versions, it will be ideal to offer users more intuitive ways to offer better feedback when a login is unsuccessful.)
 
-2. Visit “About Us” section:
-    1. Click on hamburger button: Menu opens.
-    2. Click on “About us”: About us page opens.
+2. Searching a Twitter account to get the analytics:
+    1. Input a non-existing account name: Message saying USER NOT FOUND is displayed.
+    2. Input an existing account name: Dashboard loads and tweets are retrieved.
 
-3. Fill up the form:
-    1. Click on hamburger button: Menu opens.
-    2. Click on “Contact us”: Contact us page opens.
-    3. Write name under “Name” field: Text is accepted and stays on field.
-    4. Write email under “email” field: Text stays put. Suggested email appears when using Google Chrome.
-    5. Choose a subject: Drop down menu opens allowing user to choose a subject for their email.
-    6. Write message: The message field allows users to input paragraphs of over 500 words. This is desired, as some inquiries might be very detailed.
-    7. Tried to submit the form without a name: User is not allowed to submit, a message pointing out to the required field appears. This happens for every required field when empty.
-    8. Click submit when all fields are filled correctly: The front end side of the form works as expected. It is possible to see in the URL that the form is capable of passing the message to the backend (please note that this part of the project involved setting up the frontend and it took place before the backend lessons, therefore it was considered satisfactory if it would make it this far).
+3. Going from the dashboard currently displayed to one from a different Twitter user:
+Changing the name on the dataset selector: site refreshes and retrieves information on the selected account.
+Opening the selector but keeping the same dataset as currently being displayed: nothing changes, the site continues to display current dataset.
 
 4. Different screen sizes:
-    - The site is best seen on desktop sizes, however, media queries are in place to make it functional on smaller and bigger devices.
+    - The site is mobile friendly, and it uses Bootstrap grids to provide a flexible and appealing structure that looks well both on desktop sizes and smartphones.
     - The style and colour palette remains consistent throughout different screen sizes and the text becomes smaller, but at no point it becomes so small that it impairs readability.
-    - The hamburger menu was decided for cleanliness and design more than mobile functionality. The curtain effect was requested by the owner of the website as a hint of his company style.
+
+- We choose to use yellow and purple for the scatter plot due to the fact that these two colours offer a high contrast when facing against one another.
+
 
 ### Bugs and Issues
 
-- While most of the content is responsive, some unusual and especially smaller screen sizes might crop a portion of the feature images.
-- On the entertainers landing page, smaller screen sizes cause the secondary (smaller) image of the artist to move, and it ends up partially covering some of the text describing what the act is about.
-- As a starter website (Stream 1 final project) finished in early 2017, my general knowledge of modern libraries and practicality of maintenance was still in develpment. When creating the website, I wanted to try something other than just a static page, and I chose "flashier" effects. As such, some of the addon help libraries are nearly a decade old at this point, and attempting to update them to modern standards would require a complete rewrite of the entire project. I have decided to keep the website nearly "as is" while only updating some glaring issues. Possibly in the future I may rewrite this under a whole different project repository. This being my very first completed website holds some significance in showcasing how much I could accomplish in 1 month of learning HTML and JS techniques.
+- While most of the content is responsive, some unusual and especially smaller screen sizes might crop a portion of the feature charts.
+- The current implementation shows all of a user's tweets. While this is currently desirable, as the number of stored tweets starts to grow large, reponsiveness on the site will be impacted. [Streaming tweets from the database in chunks](https://www.pubnub.com/blog/stream-data-to-create-realtime-charts-w-d3js-and-rickshaw/) is a possible solution though as of yet untested, although even then, large numbers of tweets become an issue for the browser to handle.
 
 ## Deployment
 
-I deployed this project on GitHub Pages.
-There is no difference between the development and the deployed version of the site.
+- Download or pull the repository.
+- Install all required packages with `pip install -r requirements.txt`.
+- Create a new Heroku project.
+- [Follow the great guide from Vitor Freitas on how to deploy Django projects on Heroku](https://simpleisbetterthancomplex.com/tutorial/2016/08/09/how-to-deploy-django-applications-on-heroku.html)
+- [Provision a Redis backend server](https://devcenter.heroku.com/articles/heroku-redis)
+- Ensure a Celery worker is included in your Procfile (add “worker: celery worker --app=mytweetdash -B -l info” in a new line without quotes, where mytweetdash is your Heroku project name). We have included a default Procfile for this project but if you must use your own or are trying to deploy to your own WSGI server you must include at least one Celery background worker that is needed for the project to function.
+    - `-B` to start the Beat Scheduler, which we don't use at the moment but will in a future release for scheduled tasks.
+    - `-l info` will provide verbose logs to the Heroku (or your own) log console. It can be removed after production is stable.
+- Start the Celery worker Heroku Dyno with the Heroku CLI with “heroku ps:scale worker=1:Standard-1X -a mytweetdash” (without the quotes)
+    - If deploying to your own server start the worker with `python manage.py celery -A twitter_django worker -B -l info -n worker1@myserver`
+        - (Where `twitter_django` is the Django project name, not the Heroku app name)
+        - `-l info` will provide verbose logs to the Heroku (or your own) log console. It can be removed after production is stable.
 
 ### Credits and acknowledgements
 
-All images were courtesy of Kadabra Entertainers.
+- [Change Django’s default SQLite database to a PostgreSQL database](https://tutorial-extensions.djangogirls.org/en/optional_postgresql_installation/)
+- [Implement user accounts system](https://wsvincent.com/django-user-authentication-tutorial-login-and-logout/)
+- [Workaround to have celery tasks in windows](https://github.com/celery/celery/issues/4081) (Used only for local development)
+- [Footer fix](https://medium.com/@zerox/keep-that-damn-footer-at-the-bottom-c7a921cb9551)
+- [Login dialog help](https://bootsnipp.com/snippets/R5rn4)
+- [Tweeter getter script obtained from](https://gist.github.com/MihaiTabara/631ecb98f93046a9a454) (Modified by Andres Correa with help from Richard Dalton)
 
 ### Acknowledgements
 
@@ -150,3 +191,4 @@ Code Institute Tutor Niel McEwen
 Mentors Richard Dalton and Matt Rudge
 Code Institute room on Slack
 Code Institute Alumni Gabriela Guedez
+Software Developer Vitor Freitas
