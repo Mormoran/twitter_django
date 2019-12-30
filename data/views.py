@@ -17,20 +17,21 @@ from .tasks import check_username
 class GetTweetsView(generic.DetailView):
     def post(self, request):
         twitter_user = request.POST.get("twitterUser").lower()
-        twitter_get = check_username(twitter_user)
+        clean_twitter_user = twitter_user.replace("@", "")
+        twitter_get = check_username(clean_twitter_user)
 
         if twitter_get == "User not found.":
             messages.add_message(request, messages.ERROR, twitter_get)
             return redirect('home')
 
         searched_users = request.user.searched_users
-        if twitter_user not in searched_users:
-            request.user.searched_users.append(twitter_user)
+        if clean_twitter_user not in searched_users:
+            request.user.searched_users.append(clean_twitter_user)
             request.user.save()
 
         time.sleep(5)
 
-        return redirect(reverse('show_tweets') + '?username=' + twitter_user)
+        return redirect(reverse('show_tweets') + '?username=' + clean_twitter_user)
 
 
 class ShowTweetsView(generic.DetailView):

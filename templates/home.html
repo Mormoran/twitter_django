@@ -11,7 +11,7 @@
 			<div class="col col-md-6 form-login text-center">
 				<h1 class="display-4 text-white">Ready to get tweets?</h1>
 				<div class="d-flex justify-content-center">
-					<form class="form-inline" action="{% url 'get_tweets' %}" method="POST" enctype="multipart/form-data">
+					<form class="form-inline justify-content-center" action="{% url 'get_tweets' %}" method="POST" enctype="multipart/form-data">
 						{% csrf_token %}
 						<div class="form-group mx-sm-3 mb-2">
 							<label for="searchUser" class="sr-only">Search</label>
