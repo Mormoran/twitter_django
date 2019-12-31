@@ -15,7 +15,6 @@ week_day = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 // Most liked/retweeted vs common words (crossfilter?)
 // Retweets / favorites by day of week / time of week
 // Most interactions vs time of the day
-// Catch 404 for handles that don't exist
 // Make accounts (Django?) to handle user sets (name db as user name in Django?)
 // Top users (and display their followers)
 // Compare 2 accounts side-by-side (draw tables twice using different datasets)
